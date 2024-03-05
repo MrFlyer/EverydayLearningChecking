@@ -10,10 +10,7 @@ import top.mrflyer.StartCheck.mapper.PostgreSqlJdbcConn;
 public class StartCheckApplicationController {
     @RequestMapping(value = "/ProgramData")
     public String getDataFromDate(@RequestParam(value = "dateNow") String dateNow) throws Exception {
-//        PostgreSqlJdbcConn.createTable("test");
-        PostgreSqlJdbcConn.addData("test","你好");
-        PostgreSqlJdbcConn.updateData("test","nihao","2024-03-04");
-
+        System.out.println(PostgreSqlJdbcConn.getData("test"));
         return "hello" + dateNow;
 
     }

@@ -3,9 +3,12 @@ package top.mrflyer.StartCheck.mapper;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 public class PostgreSqlJdbcConn {
+    //创建链接
     public static Connection startConnect(){
         Connection c = null;
         try{
@@ -22,7 +25,7 @@ public class PostgreSqlJdbcConn {
             throw new RuntimeException(e);
         }
     }
-
+    //创建表，若已有则不创建
     public static void createTable(String tableName) throws Exception{
         try {
             Connection c = startConnect();
@@ -41,10 +44,11 @@ public class PostgreSqlJdbcConn {
                 log.info("数据库连接以及statement链接已关闭");
             }
         }catch (Exception e){
-            log.error("Get Error" + e.toString());
+            log.error("创建表出错：" + e.toString());
+            throw new Exception(e);
         }
     }
-
+    //增条目
     public static void addData(String tableName, String data) throws Exception {
         try{
             Connection c = startConnect();
@@ -57,10 +61,11 @@ public class PostgreSqlJdbcConn {
             log.info("数据库连接以及statement链接已关闭");
 
         }catch (Exception e){
-            log.error("Get Error" + e.toString());
+            log.error("添加条目出错：" + e.toString());
+            throw new Exception(e);
         }
     }
-
+    //更新条目
     public static void updateData(String tableName, String data, String month) throws Exception{
         try{
             Connection c = startConnect();
@@ -72,7 +77,49 @@ public class PostgreSqlJdbcConn {
             c.close();
             log.info("数据库连接以及statement链接已关闭");
         }catch (Exception e){
-            log.error("Get Error" + e.toString());
+            log.error("更新数据出错" + e.toString());
+            throw new Exception(e);
+        }
+    }
+    //减条目
+    public static void deleteData(String tableName, String month) throws Exception{
+        try{
+            Connection c = startConnect();
+            Statement statement = c.createStatement();
+            String sql = "Delete from " + tableName + " where current_month = '" + month + "'";
+            statement.executeUpdate(sql);
+            log.info("删除" + month + "月份数据成功");
+            statement.close();
+            c.close();
+            log.info("数据库连接以及statement链接已关闭");
+        }catch (Exception e){
+            log.error("删除数据出错：" + e.toString());
+            throw new Exception(e);
+        }
+    }
+    //获取所有条目
+    public static ArrayList<ArrayList<String>> getData(String tableName) throws Exception{
+        try{
+            Connection c = startConnect();
+            Statement statement = c.createStatement();
+            String sql = "SELECT * FROM " + tableName;
+            ResultSet resultSet = statement.executeQuery(sql);
+            ArrayList<ArrayList<String>> allData = new ArrayList<ArrayList<String>>();
+            while (resultSet.next()){
+                ArrayList<String> arrayList = new ArrayList<String>();
+                arrayList.add(resultSet.getString("current_month"));
+                arrayList.add(resultSet.getString("data"));
+                allData.add(arrayList);
+            }
+            log.info("获取所有月份数据成功");
+            log.info("从数据库获取到数据 " + allData);
+            statement.close();
+            c.close();
+            log.info("数据库连接以及statement链接已关闭");
+            return allData;
+        }catch (Exception e){
+            log.error("获取数据出错：" + e.toString());
+            throw new Exception(e);
         }
     }
 
