@@ -122,5 +122,30 @@ public class PostgreSqlJdbcConn {
             throw new Exception(e);
         }
     }
+    //获取单天数据
+    public static String getDataByTime(String tableName, String time) throws Exception {
+        try{
+            Connection c = startConnect();
+            Statement statement = c.createStatement();
+            String sql = "SELECT * FROM " + tableName + " WHERE current_month = '" + time + "'";
+            ResultSet resultSet = statement.executeQuery(sql);
+            String dataByTime = "无数据";
+            if (resultSet.next()) {
+                dataByTime = resultSet.getString("data");
+                log.info("获取所有月份数据成功");
+                log.info("从数据库获取到数据 " + dataByTime);
+            }else {
+                log.info("获取所有月份没有数据");
+                log.info("未能从数据库获取到数据 " + dataByTime);
+            }
+            statement.close();
+            c.close();
+            log.info("数据库连接以及statement链接已关闭");
+            return dataByTime;
+        }catch (Exception e){
+            log.error("获取单个数据出错：" + e.toString());
+            throw new Exception(e);
+        }
+    }
 
 }
