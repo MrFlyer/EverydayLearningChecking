@@ -132,10 +132,10 @@ public class PostgreSqlJdbcConn {
             String dataByTime = "无数据";
             if (resultSet.next()) {
                 dataByTime = resultSet.getString("data");
-                log.info("获取所有月份数据成功");
+                log.info("获取" + time + "月份数据成功");
                 log.info("从数据库获取到数据 " + dataByTime);
             }else {
-                log.info("获取所有月份没有数据");
+                log.info("获取月份没有数据");
                 log.info("未能从数据库获取到数据 " + dataByTime);
             }
             statement.close();
