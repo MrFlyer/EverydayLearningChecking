@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import top.mrflyer.StartCheck.bean.Response;
-import top.mrflyer.StartCheck.mapper.PostgreSqlJdbcConn;
+
 import top.mrflyer.StartCheck.service.impl.ProgramDataResourceImpl;
 
 @RestController
@@ -39,7 +39,7 @@ public class StartCheckApplicationController {
         return programDataResource.deleteDataByDate(dateNow);
     }
 
-    //在原有基础上指定日期记录
+    //在原有基础上指定增日期记录
     @RequestMapping(value = "/UpdateProgramData")
     public Response updateProgramData(@RequestParam(value = "dateNow") String dateNow, @RequestParam(value = "data") String data) throws Exception {
         return programDataResource.updateDataByDate(dateNow,data);
