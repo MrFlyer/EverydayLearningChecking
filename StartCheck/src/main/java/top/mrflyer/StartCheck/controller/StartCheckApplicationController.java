@@ -2,6 +2,7 @@ package top.mrflyer.StartCheck.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,6 +11,7 @@ import top.mrflyer.StartCheck.bean.Response;
 import top.mrflyer.StartCheck.service.impl.ProgramDataResourceImpl;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class StartCheckApplicationController {
     @Autowired
     ProgramDataResourceImpl programDataResource;
