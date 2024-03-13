@@ -29,6 +29,13 @@
     days.value = dt.getDate()
     console.log(days.value)
   }
+  //TODO 将根据日期改为根据提交次数
+  //根据日期调色
+  function getColor(number){
+    const hue = (number / 31) * 120 + 150; // 0-240 蓝色的色调范围
+    return `hsl(${hue}, 70%, 70%)`; // 使用HSL颜色表示法 hsl为{色相（0-360），饱和度，亮度}
+  }
+
 </script>
 
 
@@ -36,12 +43,18 @@
   <div class="date-get">
     <button @click="getAllData">getDAta</button>
     <span>{{responseData}}</span>
-    <input v-model="dateNow"/>
-    <button @click="getDuration">提交</button>
+    <span>
+      <input v-model="dateNow"/>
+      <button @click="getDuration">提交</button>
+    </span>
+
   </div>
 
   <div class="num-table">
-    <span v-for="day in days" :key="day" class="num-items">{{ day }}</span>
+    <ul>
+      <li v-for="day in days" :key="day" :style="{backgroundColor:getColor(day)}" class="num-items">{{ day }}</li>
+
+    </ul>
   </div>
 
 </template>
@@ -55,7 +68,7 @@
     justify-content: center;
   }
   .num-items{
-    display: inline-block;
+    //display: inline-block;
     margin-right: 10px;
     padding: 5px;
     width: 30px; /* 设置固定宽度 */
@@ -63,6 +76,6 @@
     //border: 1px solid black;
     border-radius: 10px;
     margin-bottom: 10px;
-    background-color: mediumspringgreen;
+    list-style-type: none;
   }
 </style>
