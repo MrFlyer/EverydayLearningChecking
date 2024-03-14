@@ -6,16 +6,22 @@
 
 <script setup>
   import axios from "axios";
-  import {ref} from "vue";
+  import {reactive, ref} from "vue";
 
   //获取数据
-  let responseData = ref('')
+  let responseData = ref([])
+
+  let haveDataDays = ref([])
   function getAllData(){
     axios.get('http://localhost:4000/GetAllData')
         .then(response=>{
           responseData.value = response.data['data']
+          responseData.value.reduce((pre, current) => {
+            console.log(current)
+          }, [] )
         })
   }
+
 
   //根据当前月份日有多少天
   let days = ref()
@@ -42,7 +48,7 @@
 <template>
   <div class="date-get">
     <button @click="getAllData">getDAta</button>
-    <span>{{responseData}}</span>
+    <ul v-for="haveData in responseData" :key="haveData">{{haveData}}</ul>
     <span>
       <input v-model="dateNow"/>
       <button @click="getDuration">提交</button>
@@ -59,7 +65,7 @@
 
 </template>
 
-<style>
+<style scoped>
   .date-get{
     margin-bottom: 10px;
   }
