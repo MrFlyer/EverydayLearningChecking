@@ -16,9 +16,10 @@
     axios.get('http://localhost:4000/GetAllData')
         .then(response=>{
           responseData.value = response.data['data']
-          responseData.value.reduce((pre, current) => {
-            console.log(current)
-          }, [] )
+          for (let i = 0; i < responseData.value.length; i++){
+            haveDataDays.value.push(responseData.value[i])
+            console.log(haveDataDays)
+          }
         })
   }
 
@@ -48,7 +49,7 @@
 <template>
   <div class="date-get">
     <button @click="getAllData">getDAta</button>
-    <ul v-for="haveData in responseData" :key="haveData">{{haveData}}</ul>
+    <ul v-for="haveData in haveDataDays" :key="haveData">{{haveData}}</ul>
     <span>
       <input v-model="dateNow"/>
       <button @click="getDuration">提交</button>
